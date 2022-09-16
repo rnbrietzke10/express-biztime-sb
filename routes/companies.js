@@ -57,25 +57,22 @@ router.put('/:code', async (req, res, next) => {
   }
 });
 
+router.delete('/:code', async (req, res, next) => {
+  try {
+    const { code } = req.params;
+
+    const results = await db.query(`SELECT * FROM companies WHERE code=$1`, [
+      code,
+    ]);
+    if (results.rows.length === 0) {
+      throw new ExpressError(`Can not delete company with code ${code}`, 404);
+    }
+    await db.query(`DELETE FROM companies WHERE code=$1`, [code]);
+
+    return res.json({ status: 'deleted' });
+  } catch (e) {
+    next(e);
+  }
+});
+
 module.exports = router;
-
-/** 
-
-
-PUT /companies/[code]
-Edit existing company.
-
-Should return 404 if company cannot be found.
-
-Needs to be given JSON like: {name, description}
-
-Returns update company object: {company: {code, name, description}}
-
-DELETE /companies/[code]
-Deletes company.
-
-Should return 404 if company cannot be found.
-
-Returns {status: "deleted"}
-
- */
