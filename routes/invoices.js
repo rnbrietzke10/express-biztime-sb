@@ -16,14 +16,38 @@ router.get('/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
     const results = await db.query(
-      `SELECT * FROM invoices, companies WHERE invoices.id=$1 AND companies.code=invoices.comp_code`,
+      `SELECT i.id,
+                  i.comp_code,
+                  i.amt,
+                  i.paid,
+                  i.add_date,
+                  i.paid_date,
+                  c.name,
+                  c.description
+           FROM invoices AS i
+             INNER JOIN companies AS c ON (i.comp_code = c.code)
+           WHERE id = $1`,
       [id]
     );
     if (results.rows.length === 0) {
       throw new ExpressError(`Can not get invoice with id of ${id}`, 404);
     }
 
-    return res.json({ invoice: results.rows });
+    const data = results.rows[0];
+    const invoice = {
+      id: data.id,
+      amt: data.amt,
+      paid: data.paid,
+      add_date: data.add_date,
+      paid_date: data.paid_date,
+      company: {
+        code: data.comp_code,
+        name: data.name,
+        description: data.description,
+      },
+    };
+
+    return res.json({ invoice: invoice });
   } catch (e) {
     next(e);
   }
