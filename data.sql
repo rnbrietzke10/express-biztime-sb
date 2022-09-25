@@ -2,11 +2,23 @@
 
 DROP TABLE IF EXISTS invoices;
 DROP TABLE IF EXISTS companies;
+DROP TABLE IF EXISTS industries;
+DROP TABLE IF EXISTS companies_industries;
 
 CREATE TABLE companies (
     code text PRIMARY KEY,
     name text NOT NULL UNIQUE,
     description text
+);
+
+CREATE TABLE industries (
+    code text PRIMARY KEY,
+    insdustry text NOT NULL UNIQUE
+);
+
+CREATE TABLE companies_industries (
+    industry_code text NOT NULL REFERENCES industries ON DELETE CASCADE,
+    comp_code text NOT NULL REFERENCES companies ON DELETE CASCADE
 );
 
 CREATE TABLE invoices (
@@ -28,3 +40,12 @@ INSERT INTO invoices (comp_Code, amt, paid, paid_date)
          ('apple', 200, false, null),
          ('apple', 300, true, '2018-01-01'),
          ('ibm', 400, false, null);
+
+INSERT INTO industries
+  VALUES ('tech', 'Technology'),
+         ('acct', 'Accounting');
+
+
+INSERT INTO companies_industries
+  VALUES ('tech', 'apple'),
+         ('tech', 'ibm');

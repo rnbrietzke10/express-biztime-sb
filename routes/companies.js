@@ -1,11 +1,19 @@
 const express = require('express');
 const ExpressError = require('../expressError');
 const router = express.Router();
+const slugify = require('slugify');
 const db = require('../db');
 
 router.get('/', async (req, res, next) => {
   try {
-    const results = await db.query(`SELECT * FROM companies;`);
+    /*select movies.id, movies.name
+from movies inner join actors_movies
+on actors_movies.movie_id=movies.id
+where actors_movies.actor_id=$actor_id */
+    const results = await db.query(
+      `SELECT c.code, c.name, i.industry FROM companies as c 
+        INNER JOIN companies_industries AS i ON (i.comp_code = c.code);`
+    );
     return res.json({ companies: results.rows });
   } catch (e) {
     next(e);
@@ -30,7 +38,8 @@ router.get('/:code', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const { code, name, description } = req.body;
+    const { name, description } = req.body;
+    const code = slugify(name);
     const results = await db.query(
       'INSERT INTO companies (code, name, description) VALUES ($1, $2, $3) RETURNING code, name, description',
       [code, name, description]
