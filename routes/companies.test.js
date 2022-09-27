@@ -17,8 +17,16 @@ describe('GET /companies', () => {
     expect(res.statusCode).toBe(200);
     expect(res.body).toEqual({
       companies: [
-        { code: 'apple', name: 'Apple', industry: 'Technology' },
-        { code: 'ibm', name: 'IBM', industry: 'Technology' },
+        {
+          code: 'apple',
+          name: 'Apple Computer',
+          industry: 'Technology',
+        },
+        {
+          code: 'ibm',
+          name: 'IBM',
+          industry: 'Technology',
+        },
       ],
     });
   });
@@ -28,6 +36,14 @@ describe('GET /companies/:code', () => {
   test('Get a single company', async () => {
     const res = await request(app).get('/companies/apple');
     expect(res.statusCode).toBe(200);
+    expect(res.body).toEqual({
+      company: {
+        code: 'apple',
+        name: 'Apple',
+        description: 'Maker of OSX.',
+        invoices: [1, 2],
+      },
+    });
   });
 });
 /*
