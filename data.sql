@@ -13,7 +13,7 @@ CREATE TABLE companies (
 
 CREATE TABLE industries (
     code text PRIMARY KEY,
-    insdustry text NOT NULL UNIQUE
+    industry text NOT NULL UNIQUE
 );
 
 CREATE TABLE companies_industries (

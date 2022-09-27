@@ -7,8 +7,9 @@ const db = require('../db');
 router.get('/', async (req, res, next) => {
   try {
     const results = await db.query(
-      `SELECT c.code, c.name, i.industry FROM companies as c 
-        INNER JOIN companies_industries AS i ON (i.comp_code = c.code);`
+      `SELECT c.code, c.name, i.insdustry FROM companies AS c
+        INNER JOIN companies_industries AS ci ON (ci.comp_code = c.code)
+        INNER JOIN industries AS i ON i.code = ci.industry_code;`
     );
     return res.json({ companies: results.rows });
   } catch (e) {
