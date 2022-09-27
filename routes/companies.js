@@ -6,10 +6,6 @@ const db = require('../db');
 
 router.get('/', async (req, res, next) => {
   try {
-    /*select movies.id, movies.name
-from movies inner join actors_movies
-on actors_movies.movie_id=movies.id
-where actors_movies.actor_id=$actor_id */
     const results = await db.query(
       `SELECT c.code, c.name, i.industry FROM companies as c 
         INNER JOIN companies_industries AS i ON (i.comp_code = c.code);`
