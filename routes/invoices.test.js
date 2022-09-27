@@ -17,9 +17,9 @@ describe('GET /invoices', () => {
     expect(res.statusCode).toBe(200);
     expect(res.body).toEqual({
       invoices: [
-        { id: 1, comp_code: 'apple' },
-        { id: 2, comp_code: 'apple' },
-        { id: 3, comp_code: 'ibm' },
+        { id: 1, amt: 100, comp_code: 'apple' },
+        { id: 2, amt: 200, comp_code: 'apple' },
+        { id: 3, amt: 300, comp_code: 'ibm' },
       ],
     });
   });

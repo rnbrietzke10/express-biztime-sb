@@ -7,13 +7,14 @@ const db = require('../db');
 router.get('/', async (req, res, next) => {
   try {
     const results = await db.query(
-      `SELECT c.code, c.name, i.insdustry FROM companies AS c
+      `SELECT c.code, c.name, i.industry FROM companies AS c
         INNER JOIN companies_industries AS ci ON (ci.comp_code = c.code)
         INNER JOIN industries AS i ON i.code = ci.industry_code;`
     );
+    console.log(results.rows);
     return res.json({ companies: results.rows });
   } catch (e) {
-    next(e);
+    return next(e);
   }
 });
 
@@ -29,7 +30,7 @@ router.get('/:code', async (req, res, next) => {
     }
     return res.json({ company: results.rows[0] });
   } catch (e) {
-    next(e);
+    return next(e);
   }
 });
 
