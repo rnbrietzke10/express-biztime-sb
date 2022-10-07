@@ -34,7 +34,7 @@ router.get('/:code', async (req, res, next) => {
            WHERE comp_code = $1`,
       [code]
     );
-    if (results.rows.length === 0) {
+    if (compResult.rows.length === 0) {
       throw new ExpressError(`Can't find company with code of ${code}`, 404);
     }
     const company = compResult.rows[0];

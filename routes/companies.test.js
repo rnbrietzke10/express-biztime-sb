@@ -19,7 +19,7 @@ describe('GET /companies', () => {
       companies: [
         {
           code: 'apple',
-          name: 'Apple Computer',
+          name: 'Apple',
           industry: 'Technology',
         },
         {

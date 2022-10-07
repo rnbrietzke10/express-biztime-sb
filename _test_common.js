@@ -20,6 +20,9 @@ async function generateData() {
   await db.query(`INSERT INTO industries
   VALUES ('tech', 'Technology'),
          ('acct', 'Accounting');`);
+  await db.query(`INSERT INTO companies_industries
+VALUES ('tech', 'apple'),
+('tech', 'ibm');`);
 }
 
 module.exports = { generateData };
